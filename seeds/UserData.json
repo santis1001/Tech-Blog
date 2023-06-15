@@ -1,0 +1,18 @@
+[
+    {
+      "name": "Saul",
+      "email": "saul@notemail.com",
+      "password": "password12345"
+    },
+    {
+      "name": "Paulo",
+      "email": "thisispaulo@email.com",
+      "password": "password12345"
+    },
+    {
+      "name": "Anita",
+      "email": "helloanita@uemail.com",
+      "password": "password12345"
+    }
+  ]
+  
