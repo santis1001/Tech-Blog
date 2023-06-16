@@ -1,0 +1,18 @@
+[
+    {
+      "commenter": 2,
+      "comment": "This is a great blog post!",
+      "blog_id": 1
+    },
+    {
+      "commenter": 3,
+      "comment": "Thanks for sharing this insightful article.",
+      "blog_id": 1
+    },
+    {
+      "commenter": 1,
+      "comment": "I have a question related to the topic. Can you provide more information?",
+      "blog_id": 2
+    }
+  ]
+  

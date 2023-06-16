@@ -1,0 +1,12 @@
+<div class="card" id="card_id-{{id}}">
+    <div class="card-header row">
+        <h3 class="col-md-9">{{title}}</h3>
+        <p class="col-md-3">Posted by: {{user.name}} on {{format_date date_created}}</p>
+    </div>
+    <div class="card-body">
+        <p>{{body}}</p>
+    </div>
+    <div class="card-footer">
+        <p>comments: {{comments.length}}</p>
+    </div>
+</div>
