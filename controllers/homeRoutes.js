@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
       include: [
         {
           model: User,
-          attributes:['name'],
+          attributes: ['name'],
         },
         {
           model: Comment
@@ -19,12 +19,14 @@ router.get('/', async (req, res) => {
 
     // Serialize data so the template can read it
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
-    console.log(blogs);
     // Pass serialized data and session flag into template
-    res.render('blog', {
-      blogs,
-      //logged_in: req.session.logged_in
-    });
+    const data = {
+      blogs: { ...blogs },
+      title: "The Tech Blog"
+    };
+    
+
+    res.render('blog', data);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -58,8 +60,55 @@ router.get('/login', (req, res) => {
     res.redirect('/profile');
     return;
   }
+  const data = {
+    title: "Log In"
+  }
+  res.render('login', data);
+});
 
-  res.render('login');
+router.get('/register', (req, res) => {
+  // If the user is already logged in, redirect the request to another route
+  if (req.session.logged_in) {
+    res.redirect('/profile');
+    return;
+  }
+  const data = {
+    title: "Register"
+  }
+  res.render('register', data);
+});
+
+router.get('/dashboard', async (req, res) => {
+  try {
+
+    const myData = await User.findByPk('3', {
+      attributes: ['name'],
+      include: [
+        {
+          model: Blog,
+          include: [
+            {
+              model: Comment
+            }
+          ]
+        },
+      ]
+    });
+
+    const userData = myData.get({ plain: true });
+
+    console.log(userData);
+    const data = {
+      userData: { ...userData },
+      title: "Dashboard"
+    };
+
+
+    res.render('homepage', data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

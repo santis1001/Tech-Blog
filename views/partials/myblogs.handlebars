@@ -1,0 +1,14 @@
+<div class="card my-1 border-brown" id="card_id-{{id}}">
+    <div class="card-header bg-brown p-1 bg-brown">
+        <div class="row">
+            <h4 class="col-md-8 text-pistacho">{{title}}</h4>
+            <p class="col-md-4 text-pistacho ">Posted by you on {{format_date date_created}}</p>
+        </div>
+    </div>
+    <div class="card-body p-1 bg-pistacho">
+        <p>{{body}}</p>
+    </div>
+    <div class="card-footer py-1 px-2 bg-brown">
+        <p class="m-0 text-pistacho">comments: {{comments.length}}</p>
+    </div>
+</div>
