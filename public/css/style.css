@@ -1,24 +1,37 @@
-header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+.bg-brown {
+  background-color: rgb(35, 16, 16);
 }
 
-.no-button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: #1b89bc;
-  text-decoration: none;
-  font-size: 100%;
+.bg-pistacho {
+  background-color: rgb(217, 234, 211);
 }
 
-.no-button:hover {
-  color: #065b83;
-  text-decoration: underline;
+.text-brown {
+  color: rgb(35, 16, 16);
 }
 
-.dollar-amount {
-  color: #056605;
-  font-weight: bold;
-  margin-left: -5px;
+.text-pistacho {
+  color: rgb(217, 234, 211);
+}
+
+.cst-shadow {
+  box-shadow: 8px 8px 0px 0px rgb(139, 139, 139);
+}
+
+a.custom-title:hover {
+  color: rgb(87, 41, 41);
+}
+
+a.custom-nav:hover {
+  color: rgb(147, 160, 143);
+}
+
+.border-brown {
+  border-width: 3px;
+  border-radius: 8px;
+  background-color: rgb(35, 16, 16);
+  border-color: rgb(35, 16, 16);
+}
+.btn-login.custom-btn:hover {
+  color: rgb(147, 160, 143);
 }

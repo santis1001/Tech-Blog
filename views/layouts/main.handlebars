@@ -5,21 +5,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registry</title>
-  <link rel="stylesheet" href="./css/jass.css">
+
+  <link rel="stylesheet" href="/css/jass.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
-  <header class="display-flex justify-space-between align-center p-2">
-    <h1 class="card">
-      The Tech Blog
-    </h1>
-  </header>
-  <main class="container container-fluid mt-5">
-    {{{ body }}}
-  </main>
-  <footer>
-      
-  </footer>
+<body class="bg-pistacho">
+  <div class="flex-column justify-space-around">
+    <header class="p-2 bg-brown">
+      <div class="p-3">
+        <nav>
+          <a class="p-2 text-pistacho fs-3 text-decoration-none custom-nav" href="/">Home</a>
+          <a class="p-2 text-pistacho fs-3 text-decoration-none custom-nav" href="/Dashboard">Dashboard</a>
+          {{#if logged_in}}
+          <a class="p-2 text-pistacho fs-3 text-decoration-none custom-nav" href="/logout">logout</a>          
+          {{else}}
+          <a class="p-2 text-pistacho fs-3 text-decoration-none custom-nav"  href="/login">login</a>
+          {{/if}}
+        </nav>
+      </div>
+      <div class="bg-pistacho px-4 my-4 ms-4 rounded cst-shadow d-inline-block">
+        <h1>
+          <a href="/" class="p-2 text-brown fw-bold text-decoration-none custom-title">The Tech Blog</a>
+        </h1>
+      </div>
+    </header>
+    <main class="container container-fluid mt-5">
+      <!-- Render the sub layout -->
+      {{{ body }}}
+    </main>
+    <footer>
+
+    </footer>
+  </div>
+
+  <!-- Render script for logged in users only -->
+  {{#if logged_in}}
+  <script src="/js/logout.js"></script>
+  {{/if}}
 </body>
 
 </html>
