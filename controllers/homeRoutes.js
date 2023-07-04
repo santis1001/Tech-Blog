@@ -91,7 +91,8 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
       const data = {
         userData: { ...userData },
-        maintitle: "Dashboard"
+        maintitle: "Dashboard",
+        logged_in: (req.session.logged_in) ? true : false,
       };
       console.log(userData);
 
