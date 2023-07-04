@@ -136,8 +136,9 @@ router.get('/blog/:id', async (req, res) => {
       ...blog,
       maintitle: "The Tech Blog",
       logged_in: (req.session.logged_in) ? true : false,
+      myblog: (req.session.user_id == blog.user_id)?true:false
     };
-    console.log(data.comments[0]);
+    console.log(data);
 
     data.comments.map(comment => {
       if (comment.user.id === req.session.user_id) {

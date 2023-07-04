@@ -50,3 +50,19 @@ a.custom-nav:hover {
   height: calc(100% - 63px);
   padding-top: 15px;
 }
+.title-input{
+  background-color: rgb(35, 16, 16);
+  outline: none;
+  border: none;
+  
+}
+.title-input::placeholder{
+  color: rgb(217, 234, 211);
+}
+.body-textarea{
+  background-color: rgb(217, 234, 211);
+  resize: none;
+  height: calc(100% - 63px);
+  padding-top: 15px;
+  width: 100%;
+}

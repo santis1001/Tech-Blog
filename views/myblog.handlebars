@@ -1,3 +1,27 @@
+{{#if myblog}}
+<div class="card my-1 border-brown" id="card_id-{{id}}">
+    <div class="card-header bg-brown p-1 bg-brown">
+        <div class="row mx-1">
+            <input class="title-input col-md-8 text-pistacho" readonly placeholder="{{title}}"></input>
+            <p class="col-md-4 text-pistacho ">Posted by: You on {{format_date date_created}}</p>
+        </div>
+    </div>
+    <div class="card-body p-1 bg-pistacho">
+        <textarea class="body-textarea fs-5 form-input border-0 " id="comment-content" name="comment-content"
+            placeholder="{{body}}" readonly></textarea>
+    </div>
+    <div class="card-footer py-1 px-2 bg-brown">
+        <div class="row">
+            <p class="w-100 m-0 text-pistacho">comments: {{comments.length}}</p>
+            <div class="col-auto form-group text-center mt-2">
+                <button type="submit" class="btn btn-success" id="edit-btn">Edit</button>
+                <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/myblog.js"></script>
+{{else}}
 <div class="card my-1 border-brown" id="card_id-{{id}}">
     <div class="card-header bg-brown p-1 bg-brown">
         <div class="row">
@@ -12,6 +36,7 @@
         <p class="m-0 text-pistacho">comments: {{comments.length}}</p>
     </div>
 </div>
+{{/if}}
 
 {{#if logged_in}}
 <div class="card  my-1 border-brown">
