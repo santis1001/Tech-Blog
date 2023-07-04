@@ -22,9 +22,9 @@ router.get('/', async (req, res) => {
     // Pass serialized data and session flag into template
     const data = {
       blogs: { ...blogs },
-      title: "The Tech Blog"
+      maintitle: "The Tech Blog"
     };
-    
+
 
     res.render('blog', data);
   } catch (err) {
@@ -61,7 +61,7 @@ router.get('/login', (req, res) => {
     return;
   }
   const data = {
-    title: "Log In"
+    maintitle: "Log In"
   }
   res.render('login', data);
 });
@@ -73,7 +73,7 @@ router.get('/register', (req, res) => {
     return;
   }
   const data = {
-    title: "Register"
+    maintitle: "Register"
   }
   res.render('register', data);
 });
@@ -100,11 +100,47 @@ router.get('/dashboard', async (req, res) => {
     console.log(userData);
     const data = {
       userData: { ...userData },
-      title: "Dashboard"
+      maintitle: "Dashboard"
     };
 
 
     res.render('homepage', data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+
+router.get('/blog/:id', async (req, res) => {
+  try {
+    // Find the logged in user based on the session ID
+    const blogData = await Blog.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ['id','name'],
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id','name'],
+            }
+          ]
+        },
+      ]
+    });
+
+    const blog = blogData.get({ plain: true });
+    const data = {
+      ...blog ,
+      maintitle: "The Tech Blog"
+    };
+    console.log(data.comments);
+
+    res.render('myblog', data );
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
