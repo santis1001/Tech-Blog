@@ -13,6 +13,38 @@
     </div>
 </div>
 
+{{#if logged_in}}
+<div class="card  my-1 border-brown">
+    <div class="card-header bg-brown p-1 bg-brown">
+        <h4 class="text-pistacho">Create a New Comment:</h4>
+    </div>
+    <div class="card-body p-1 bg-pistacho">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <form class="form comment-form">
+                    <div class="form-group mx-3 mb-2">
+                        <textarea class="blog-textarea fs-5 form-input border-0 " id="comment-content"
+                            name="comment-content" placeholder="Comment Content"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer py-1 px-2 bg-brown">
+        <div class="form-group text-center mt-2">
+            <button type="submit" class="btn btn-primary" id="commentbtn">Post Comment</button>
+        </div>
+    </div>
+</div>
+<script src="/js/post.js"></script>
+{{else}}
+<div class="text-center mt-2">
+    <div class="row d-inline-flex align-items-center">
+        <a href="/login" class="col-auto m-0 p-0">Log In</a>
+        <p class="col-auto m-0 p-0">&nbsp;to comment</p>
+    </div>
+</div>
+{{/if}}
 <section>
     {{#each comments }}
     {{> blogcomments}}

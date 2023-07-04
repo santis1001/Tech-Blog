@@ -35,3 +35,18 @@ a.custom-nav:hover {
 .btn-login.custom-btn:hover {
   color: rgb(147, 160, 143);
 }
+
+.blog-textarea,
+.blog-title {
+  color: #000000;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+
+.blog-textarea {
+  resize: none;
+  height: calc(100% - 63px);
+  padding-top: 15px;
+}

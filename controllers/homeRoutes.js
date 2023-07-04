@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['id','name'],
         },
         {
           model: Comment
@@ -21,43 +21,34 @@ router.get('/', async (req, res) => {
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
     // Pass serialized data and session flag into template
     const data = {
-      blogs: { ...blogs },
-      maintitle: "The Tech Blog"
+      blogs: [ ...blogs.reverse() ],
+      maintitle: "The Tech Blog",
+      logged_in: (req.session.logged_in) ? true : false,
+      name: (req.session.user_name) ? req.session.user_name : 'none'
     };
 
+    data.blogs.map(blog => {
+      if (blog.user.id === req.session.user_id) {
+        blog.user.name = 'You';
+      }
+      return blog;
+    });
+    
+    
+    console.log(data);
 
     res.render('blog', data);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
-
-
-// Use withAuth middleware to prevent access to route
-router.get('/profile', withAuth, async (req, res) => {
-  try {
-    // Find the logged in user based on the session ID
-    const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ['password'] },
-      include: [{ model: Blog }],
-    });
-
-    const user = userData.get({ plain: true });
-
-    res.render('profile', {
-      ...user,
-      logged_in: true
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/profile');
+    res.redirect('/');
     return;
   }
   const data = {
@@ -78,33 +69,40 @@ router.get('/register', (req, res) => {
   res.render('register', data);
 });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
+    let userid = req.session.user_id;
+    if (userid) {
+      const myData = await User.findByPk(userid, {
+        attributes: ['name'],
+        include: [
+          {
+            model: Blog,
+            include: [
+              {
+                model: Comment
+              }
+            ]
+          },
+        ]
+      });
 
-    const myData = await User.findByPk('3', {
-      attributes: ['name'],
-      include: [
-        {
-          model: Blog,
-          include: [
-            {
-              model: Comment
-            }
-          ]
-        },
-      ]
-    });
+      const userData = myData.get({ plain: true });
 
-    const userData = myData.get({ plain: true });
-
-    console.log(userData);
-    const data = {
-      userData: { ...userData },
-      maintitle: "Dashboard"
-    };
+      const data = {
+        userData: { ...userData },
+        maintitle: "Dashboard"
+      };
+      console.log(userData);
 
 
-    res.render('homepage', data);
+      res.render('homepage', data);
+    } else {
+      const data = {
+        maintitle: "Log In"
+      }
+      res.render('login', data);
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -119,14 +117,14 @@ router.get('/blog/:id', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['id','name'],
+          attributes: ['id', 'name'],
         },
         {
           model: Comment,
           include: [
             {
               model: User,
-              attributes: ['id','name'],
+              attributes: ['id', 'name'],
             }
           ]
         },
@@ -135,12 +133,20 @@ router.get('/blog/:id', async (req, res) => {
 
     const blog = blogData.get({ plain: true });
     const data = {
-      ...blog ,
-      maintitle: "The Tech Blog"
+      ...blog,
+      maintitle: "The Tech Blog",
+      logged_in: (req.session.logged_in) ? true : false,
     };
-    console.log(data.comments);
+    console.log(data.comments[0]);
 
-    res.render('myblog', data );
+    data.comments.map(comment => {
+      if (comment.user.id === req.session.user_id) {
+        comment.user.name = 'You';
+      }
+      return comment;
+    });
+
+    res.render('myblog', data);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
