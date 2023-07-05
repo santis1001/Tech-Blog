@@ -2,7 +2,10 @@
 14 Challenge
 ## Decription
 
+## Web App
+<sub style='font-weight: bold;'>* This is a link. Click to open app.</sub>
 
+[![E-commerce API Video ](./assets/Logo.JPG)](https://peaceful-haleakala-03666-e33d7433d6c8.herokuapp.com/)
 ## User Story
 
 ```md
@@ -452,9 +455,9 @@ router.get('/blog/:id', async (req, res) => {
 ```
 ### **API Routes**
 
-**BlogRoutes.js**
+**blogRoutes.js**
 
-The `POST` route `'/'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, a new entry is added to the blog table using the data from `req.body` (the request body) and the `user_id` from the current session.
+The `POST` route `'/api/blog/'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, a new entry is added to the blog table using the data from `req.body` (the request body) and the `user_id` from the current session.
 ```js
 router.post('/', withAuth, async (req, res) => {
   try {
@@ -470,7 +473,7 @@ router.post('/', withAuth, async (req, res) => {
 });
 ```
 
-The `PUT` route `'/:id'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, a new entry is added to the blog table using the data from `req.body` (the request body) and the `user_id` from the current session.
+The `PUT` route `'/api/blog/:id'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, an existing blog is updated using the data from `req.body` (the request body), the updated blog will be one that match the `user_id` from the current session and the `blog_id` pass from the `req.params.id`.
 ```js
 router.put('/:id', withAuth, async (req, res) => {
   try {
@@ -493,6 +496,7 @@ router.put('/:id', withAuth, async (req, res) => {
 });
 ```
 
+The `DELETE` route `'/api/blog/:id'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, an existing blog is deleted using the id pass by the `req.params.id` to identify the blog to delete.
 ```js
 router.delete('/:id', withAuth, async (req, res) => {
   try {
@@ -511,6 +515,94 @@ router.delete('/:id', withAuth, async (req, res) => {
     res.status(200).json(blogData);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+```
+**commentRoutes.js**
+
+The `POST` route `'/api/comment/'` is accessible when the user is authenticated (`withAuth`). When this route is triggered, a new entry is added to the comment table using the data from `req.body` (the request body) and the `user_id` from the current session.
+```js
+router.post('/api/comment/', withAuth, async (req, res) => {
+    try {
+        const newComment = await Comment.create({
+            ...req.body,
+            commenter: req.session.user_id,
+        });
+
+        res.status(200).json(newComment);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
+
+```
+
+**userRoutes.js**
+
+The `POST` route `'/api/users/'`. When this route is triggered, a new entry is added to the user table using the data from `req.body` (the request body) and saves the cookies for the current session.
+```js
+router.post('/', async (req, res) => {
+  try {
+    const userData = await User.create(req.body);
+
+    req.session.save(() => {
+      req.session.user_id = userData.id;
+      req.session.user_name = userData.name;
+      req.session.logged_in = true;
+
+      res.redirect('/');
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+```
+
+The `POST` route `'/api/users/'`. When this route is triggered, it checks the credentials passed through the `req.body` then compare to the ones in the database searching for a match. If a match is found it will save the session data into the cookies. If there is no match it will promt an error to the user.
+```js
+router.post('/login', async (req, res) => {
+  try {
+    const userData = await User.findOne({ where: { email: req.body.email } });
+
+    if (!userData) {
+      res
+        .status(400)
+        .json({ message: 'Incorrect email or password, please try again' });
+      return;
+    }
+
+    const validPassword = await userData.checkPassword(req.body.password);
+
+    if (!validPassword) {
+      res
+        .status(400)
+        .json({ message: 'Incorrect email or password, please try again' });
+      return;
+    }
+
+    req.session.save(() => {
+      req.session.user_id = userData.id;
+      req.session.user_name = userData.name;
+      req.session.logged_in = true;
+      
+      res.json({ user: userData, message: 'You are now logged in!' });
+    });
+
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+```
+
+The `POST` route `'/api/users/'`. When this route is triggered, it destroys all the data stored in the cookies. the session stored in the server is ended too.
+```js
+router.post('/logout', (req, res) => {
+  if (req.session.logged_in) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
   }
 });
 ```
