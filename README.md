@@ -2,10 +2,13 @@
 14 Challenge
 ## Decription
 
+This project is a web application that allows users to create, view, and manage blog posts. It provides features such as user authentication, allowing only authenticated users to perform certain actions. Users can create new blog posts, view existing blog posts along with their comments, and perform actions like editing or deleting their own posts. The application ensures data security and provides a user-friendly interface for an enhanced blogging experience.
+
 ## Web App
 <sub style='font-weight: bold;'>* This is a link. Click to open app.</sub>
 
 [![E-commerce API Video ](./assets/Logo.JPG)](https://peaceful-haleakala-03666-e33d7433d6c8.herokuapp.com/)
+
 ## User Story
 
 ```md
@@ -609,4 +612,17 @@ router.post('/logout', (req, res) => {
 
 ## Screenshots
 
-## Video
+### Main Screen
+![main-screen-picture](./assets/mainscreen.png)
+
+### Dashboard
+![Dashboard-screen-picture](./assets/dashboard.png)
+
+### Blog View
+![main-screen-picture](./assets/blog.png)
+
+### Log In
+![LogIn-screen-picture](./assets/login.png)
+
+### Register
+![Register-screen-picture](./assets/register.png)
