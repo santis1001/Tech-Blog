@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['id','name'],
+          attributes: ['id', 'name'],
         },
         {
           model: Comment
@@ -21,20 +21,19 @@ router.get('/', async (req, res) => {
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
     // Pass serialized data and session flag into template
     const data = {
-      blogs: [ ...blogs.reverse() ],
+      blogs: [...blogs.reverse()],
       maintitle: "The Tech Blog",
       logged_in: (req.session.logged_in) ? true : false,
       name: (req.session.user_name) ? req.session.user_name : 'none'
     };
-
-    data.blogs.map(blog => {
-      if (blog.user.id === req.session.user_id) {
-        blog.user.name = 'You';
-      }
-      return blog;
-    });
-    
-    
+    if (req.session.logged_in) {
+      data.blogs.map(blog => {
+        if (blog.user.id === req.session.user_id) {
+          blog.user.name = 'You';
+        }
+        return blog;
+      });
+    }
     console.log(data);
 
     res.render('blog', data);
@@ -60,7 +59,7 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/profile');
+    res.redirect('/');
     return;
   }
   const data = {
@@ -137,7 +136,7 @@ router.get('/blog/:id', async (req, res) => {
       ...blog,
       maintitle: "The Tech Blog",
       logged_in: (req.session.logged_in) ? true : false,
-      myblog: (req.session.user_id == blog.user_id)?true:false
+      myblog: (req.session.user_id == blog.user_id) ? true : false
     };
     console.log(data);
 
